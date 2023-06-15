@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +23,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $usersTableColumns = [
+            "name",
+            "email",
+            "created_at",
+            "updated_at",
+            "edit",
+            "delete",
+        ];
+
+        $usersTableColumnsDTFormat  = Arr::map($usersTableColumns, function ($value, $key) {
+            if($value === 'edit' || $value ==='delete'){
+                return ["data" => $value, "orderable" => false];
+            }
+            return ["data" => $value ];
+        });
+
+        return view('home', compact("usersTableColumnsDTFormat"));
     }
 }

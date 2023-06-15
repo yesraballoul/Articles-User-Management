@@ -16,33 +16,20 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <table id="table_id" class="table table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Column 1</th>
-                                <th>Column 2</th>
-                                <th>Column 3</th>
-                                <th>Column 4</th>
-                                <th>Column 5</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Row 1 Data 1</td>
-                                <td>Row 1 Data 2</td>
-                                <td>Row 1 Data 3</td>
-                                <td>Row 1 Data 4</td>
-                                <td>Row 1 Data 5</td>
-                            </tr>
-                            <tr>
-                                <td>Row 2 Data 1</td>
-                                <td>Row 2 Data 2</td>
-                                <td>Row 2 Data 3</td>
-                                <td>Row 2 Data 4</td>
-                                <td>Row 2 Data 5</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-sm">
+                        <table id="table_id" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    @foreach ($usersTableColumnsDTFormat as $column)
+                                        <th>{{ $column['data'] }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,58 +43,19 @@
 
 @section('js')
     <script> console.log('Hi!'); 
-        
-        var data = [
-            [
-                "Tiger Nixon",
-                "System Architect",
-                "Edinburgh",
-                "5421",
-                "2011/04/25",
-                "$3,120"
-            ],
-            [
-                "Garrett Winters",
-                "Director",
-                "Edinburgh",
-                "8422",
-                "2011/07/25",
-                "$5,300"
-            ]
-        ]
-        var data2 = [{
-                "name": "Tiger Nixon",
-                "position": "System Architect",
-                "salary": "$3,120",
-                "start_date": "2011/04/25",
-                "office": "Edinburgh",
-                "extn": "5421"
-            },
-            {
-                "name": "Garrett Winters",
-                "position": "Director",
-                "salary": "$5,300",
-                "start_date": "2011/07/25",
-                "office": "Edinburgh",
-                "extn": "8422"
-            }
-        ]
+      
+      let usersTableColumnsDTFormat = {{ Illuminate\Support\Js::from($usersTableColumnsDTFormat) }}
+      
         $(document).ready(function() {
-            $('#table_id').DataTable({
-                // data: data2,
-                // columns: [{
-                //         data: 'name'
-                //     },
-                //     {
-                //         data: 'position'
-                //     },
-                //     {
-                //         data: 'salary'
-                //     },
-                //     {
-                //         data: 'office'
-                //     }
-                // ]
+            var table = $('#table_id').DataTable({
+                searching: false,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('api.users.index') }}",
+                    dataSrc: "data"
+                },
+                columns: usersTableColumnsDTFormat
             });
         });
     </script>

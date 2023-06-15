@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum']], function () {
+    Route::get('/users', 'UserController@index')->name('users.index');
+
+});
