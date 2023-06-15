@@ -14,8 +14,18 @@
 
     <div class="row">
         <div class="col">
-            <div class="card">
+            <div class="card"><div class="card-header">
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    {{ __('Users') }}
+                    <div><a class="btn btn-primary" href="{{ route('users.create') }}">{{ __('create user') }}</a></div>
+                </div>
+            </div>
                 <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <div class="table-responsive-sm">
                         <table id="table_id" class="table table-hover">
                             <thead>
@@ -43,8 +53,43 @@
 
 @section('js')
     <script> console.log('Hi!'); 
-      
+      function isEditColumn(columns) {
+            return columns.data === "edit";
+        }
+
+        function isDeleteColumn(columns) {
+            return columns.data === "delete";
+        }
+        
+
       let usersTableColumnsDTFormat = {{ Illuminate\Support\Js::from($usersTableColumnsDTFormat) }}
+      let withEditColumn = usersTableColumnsDTFormat.find(isEditColumn);
+      let withDeleteColumn = usersTableColumnsDTFormat.find(isDeleteColumn);
+
+      if (withEditColumn) {
+            withEditColumn.data = "id";
+            withEditColumn.render = function(data, type, row) {
+                return `<a class="btn btn-xs btn-default text-primary mx-1 shadow" href="{{ route('users.edit', ':id') }}"><i class="fa fa-lg fa-fw fa-pen"></i></a>`
+                    .replace(
+                        ":id", data);
+            }
+        }
+
+        if (withDeleteColumn) {
+            withDeleteColumn.data = "id";
+            withDeleteColumn.render = function(data, type, row) {
+                return `
+                <form method="post" action="{{ route('users.destroy', ':id') }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-xs btn-default text-danger mx-1 shadow">
+                        <i class="fa fa-lg fa-fw fa-trash"></i>
+                    </button>
+                </form>`
+                    .replace(
+                        ":id", data);
+            }
+        }
       
         $(document).ready(function() {
             var table = $('#table_id').DataTable({
