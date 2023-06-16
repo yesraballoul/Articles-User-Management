@@ -19,8 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(["middleware" => ["auth"]], function () {
-    Route::resource("users", "UserController");
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::resource("users", "UserController")->except(["show"]);
+    Route::resource("roles", "RoleController")->except(["show"]);
 });

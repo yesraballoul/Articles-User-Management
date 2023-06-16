@@ -26,6 +26,7 @@ class HomeController extends Controller
         $usersTableColumns = [
             "name",
             "email",
+            "role",
             "created_at",
             "updated_at",
         ];
@@ -36,9 +37,9 @@ class HomeController extends Controller
         if (auth()->user()->can("delete users")) {
             array_push($usersTableColumns, "delete");
         }
-        
+
         $usersTableColumnsDTFormat  = Arr::map($usersTableColumns, function ($value, $key) {
-            if($value === 'edit' || $value ==='delete'){
+            if($value === 'edit' || $value ==='delete' || $value === 'role'){
                 return ["data" => $value, "orderable" => false];
             }
             return ["data" => $value ];

@@ -26,6 +26,33 @@
                     <form method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
                         @csrf
                         @method("PUT")
+                        
+                        <div class="row mb-3">
+                            <label for="id" class="col-md-4 col-form-label text-md-end">{{ __('Role') }}</label>
+                            <div class="col-md-6">
+                                <select class="form-control @error('role') is-invalid @enderror" name="role" required
+                                    autocomplete="role" autofocus>
+
+                                    <option @if (!old('role') && !$userRole) selected @endif value="">Choose a role..
+                                    </option>
+                                    @foreach ($rolesNames as $roleName)
+                                        @if (old('role') === $roleName)
+                                            <option selected value="{{ $roleName }}">{{ $roleName }}</option>
+                                        @elseif(!old('role') && $userRole === $roleName)
+                                            <option selected value="{{ $roleName }}">{{ $roleName }}</option>
+                                        @else
+                                            <option value="{{ $roleName }}">{{ $roleName }}</option>
+                                        @endif
+                                    @endforeach
+
+                                </select>
+                                @error('role')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
