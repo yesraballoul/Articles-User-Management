@@ -29,6 +29,12 @@ class RoleAndPermissionSeeder extends Seeder
          Permission::create(['name' => 'update roles', 'group' => 'roles']);
          Permission::create(['name' => 'delete roles', 'group' => 'roles']);
 
+        //articles crud permissions
+        Permission::create(['name' => 'view all articles', 'group' => 'articles']);
+        Permission::create(['name' => 'create articles', 'group' => 'articles']);
+        Permission::create(['name' => 'update articles', 'group' => 'articles']);
+        Permission::create(['name' => 'delete articles', 'group' => 'articles']);
+
         //other crud permissions
         //Permissions::create['name'=> 'make something']
 
@@ -46,6 +52,12 @@ class RoleAndPermissionSeeder extends Seeder
                 "create roles",
                 "update roles",
                 "delete roles",
+
+                 // articles crud permission
+                 "view all articles",
+                 "create articles",
+                 "update articles",
+                 "delete articles",
 
                 //other crud permissions
                 //"make somethings"

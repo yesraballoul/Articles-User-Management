@@ -3,30 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ArticleController extends Controller
 {
+
     /**
-    * Create the controller instance.
-    *
-    * @return void
-    */
-   public function __construct()
-   {
-       $this->authorizeResource(User::class, 'user');
-   }
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Article::class, 'article');
+    }
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $orderByColumnName = request()->columns[request()->order[0]["column"]]["data"];
         $orderDirection = request()->order[0]["dir"];
 
-        $query = User::with('roles:name');
+        $query = Article::with('user:name');
 
         $data = $query->clone()
             ->orderBy($orderByColumnName, $orderDirection)
@@ -37,8 +35,8 @@ class UserController extends Controller
         $responseDTformat = [
             
             "draw" => intval(request()->input("draw")),
-            "recordsTotal" => User::count(),
-            "recordsFiltered" => User::count(),
+            "recordsTotal" => Article::count(),
+            "recordsFiltered" => Article::count(),
             "data" => $data,
         ];
         return response()->json($responseDTformat);

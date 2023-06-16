@@ -323,6 +323,12 @@ return [
             'icon'  => 'fa fa-users-cog',
             'can' => 'view all roles'
         ],
+        [
+            'text'  => 'Articles',
+            'route' => 'articles.index',
+            'icon'  => 'fa fa-file-text',
+            'can' => 'view all articles'
+        ],
         // [
         //     'text' => 'blog',
         //     'url'  => 'admin/blog',
