@@ -28,10 +28,15 @@ class HomeController extends Controller
             "email",
             "created_at",
             "updated_at",
-            "edit",
-            "delete",
         ];
 
+        if (auth()->user()->can("update users")) {
+            array_push($usersTableColumns, "edit");
+        }
+        if (auth()->user()->can("delete users")) {
+            array_push($usersTableColumns, "delete");
+        }
+        
         $usersTableColumnsDTFormat  = Arr::map($usersTableColumns, function ($value, $key) {
             if($value === 'edit' || $value ==='delete'){
                 return ["data" => $value, "orderable" => false];

@@ -17,7 +17,9 @@
             <div class="card"><div class="card-header">
                 <div class="d-flex flex-row justify-content-between align-items-center">
                     {{ __('Users') }}
+                    @can('create users')
                     <div><a class="btn btn-primary" href="{{ route('users.create') }}">{{ __('create user') }}</a></div>
+                    @endcan
                 </div>
             </div>
                 <div class="card-body">
