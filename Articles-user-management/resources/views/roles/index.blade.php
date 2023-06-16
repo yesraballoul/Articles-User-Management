@@ -96,6 +96,7 @@
                 },
                 columns: rolesTableColumnsDTFormat
             });
+            //closeAlertsAfter(3000);
         });
     </script>
 @stop

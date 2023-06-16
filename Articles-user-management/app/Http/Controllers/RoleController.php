@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -9,6 +10,15 @@ use Illuminate\Support\Arr;
 
 class RoleController extends Controller
 {
+     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Role::class, 'role');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +52,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissionsByGroup = Permission::all()->groupBy('group');
+
+        return response()->view("roles.create", compact('permissionsByGroup'));
     }
 
     /**
@@ -50,7 +62,9 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        //
+        $role = Role::create(["name" => $request->name]);
+        $role->givePermissionTo($request->permissions);
+        return redirect()->route('roles.index')->with('status', 'Role created successfully!!');
     }
 
     /**
@@ -66,7 +80,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        $permissionsByGroup = Permission::all()->groupBy('group');
+
+        $rolePermissionsIds = $role->permissions()->pluck('id');
+
+        return response()->view('roles.edit', compact('role', 'permissionsByGroup', 'rolePermissionsIds'));
     }
 
     /**
@@ -74,7 +92,12 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role->fill([
+            'name' => $request->name,
+        ])->save();
+        $role->syncPermissions($request->permissions);
+
+        return redirect()->route("roles.index")->with("status", "Role updated successfully!!");
     }
 
     /**
@@ -82,6 +105,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return redirect()->route('roles.index')->with(["status" => "Role deleted successfully!!"]);
     }
 }

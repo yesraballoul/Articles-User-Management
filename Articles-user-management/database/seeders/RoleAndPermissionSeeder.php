@@ -18,16 +18,16 @@ class RoleAndPermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         //users crud permissions
-        Permission::create(['name' => 'view all users']);
-        Permission::create(['name' => 'create users']);
-        Permission::create(['name' => 'update users']);
-        Permission::create(['name' => 'delete users']);
+        Permission::create(['name' => 'view all users', 'group' => 'users']);
+        Permission::create(['name' => 'create users', 'group' => 'users']);
+        Permission::create(['name' => 'update users', 'group' => 'users']);
+        Permission::create(['name' => 'delete users', 'group' => 'users']);
 
          // roles crud permissions
-         Permission::create(['name' => 'view all roles']);
-         Permission::create(['name' => 'create roles']);
-         Permission::create(['name' => 'update roles']);
-         Permission::create(['name' => 'delete roles']);
+         Permission::create(['name' => 'view all roles', 'group' => 'roles']);
+         Permission::create(['name' => 'create roles', 'group' => 'roles']);
+         Permission::create(['name' => 'update roles', 'group' => 'roles']);
+         Permission::create(['name' => 'delete roles', 'group' => 'roles']);
 
         //other crud permissions
         //Permissions::create['name'=> 'make something']

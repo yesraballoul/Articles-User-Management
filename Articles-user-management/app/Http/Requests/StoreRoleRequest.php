@@ -11,7 +11,7 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,21 @@ class StoreRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => ['required', 'string', 'max:255'],
+            "permissions" => ['required', 'array', 'exists:permissions,name'],
+        ];
+
+    }
+
+     /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'permissions.required' => 'choose at least one permission',
         ];
     }
 }
